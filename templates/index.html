@@ -1,7 +1,29 @@
 {% extends "base.html" %}
 {% block content %}
-  <div class="text-center">
-    <h1>Bem-vindo ao Delivery</h1>
-    <a href="{{ url_for('cadastro') }}" class="btn btn-primary mt-3">Cadastro para clientes</a>
-  </div>
+<div class="text-center">
+    <h1 class="display-4">Bem-vindo ao Sistema Delivery</h1>
+    <p class="lead">Sistema de gerenciamento de delivery</p>
+    
+    <div class="row mt-5">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Clientes</h5>
+                    <p class="card-text">Cadastro e gerenciamento de clientes</p>
+                    <a href="{{ url_for('cadastro') }}" class="btn btn-primary">Cadastrar Cliente</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Restaurantes</h5>
+                    <p class="card-text">Cadastro e gerenciamento de restaurantes</p>
+                    <a href="{{ url_for('cadastro_restaurante') }}" class="btn btn-success">Cadastrar Restaurante</a>
+                    <a href="{{ url_for('lista_restaurantes') }}" class="btn btn-outline-secondary">Ver Restaurantes</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

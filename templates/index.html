@@ -1,29 +1,83 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="text-center">
-    <h1 class="display-4">Bem-vindo ao Sistema Delivery</h1>
-    <p class="lead">Sistema de gerenciamento de delivery</p>
-    
-    <div class="row mt-5">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Clientes</h5>
-                    <p class="card-text">Cadastro e gerenciamento de clientes</p>
-                    <a href="{{ url_for('cadastro') }}" class="btn btn-primary">Cadastrar Cliente</a>
-                </div>
-            </div>
+<!-- Hero Section -->
+<div class="hero-section text-center">
+  <div class="container">
+    <h1 class="display-4 fw-bold mb-3">🍽️ Nunca foi tão fácil pedir comida!</h1>
+    <p class="lead mb-4">Descubra restaurantes incríveis perto de você</p>
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="input-group input-group-lg">
+          <input type="text" class="form-control" placeholder="Digite seu endereço para buscar restaurantes...">
+          <button class="btn btn-light text-ifood fw-bold" type="button">Buscar</button>
         </div>
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Restaurantes</h5>
-                    <p class="card-text">Cadastro e gerenciamento de restaurantes</p>
-                    <a href="{{ url_for('cadastro_restaurante') }}" class="btn btn-success">Cadastrar Restaurante</a>
-                    <a href="{{ url_for('lista_restaurantes') }}" class="btn btn-outline-secondary">Ver Restaurantes</a>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
+  </div>
+</div>
+
+<!-- Cards de Funcionalidades -->
+<div class="row">
+  <div class="col-md-6 mb-4">
+    <div class="card card-ifood h-100">
+      <div class="card-body text-center p-4">
+        <div class="mb-3">
+          <span class="display-4">👥</span>
+        </div>
+        <h3 class="card-title text-ifood fw-bold">Gestão de Clientes</h3>
+        <p class="card-text text-muted">Cadastre e gerencie todos os clientes do seu delivery</p>
+        <div class="mt-3">
+          <a href="{{ url_for('cadastro') }}" class="btn btn-ifood btn-lg w-100">Cadastrar Cliente</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-6 mb-4">
+    <div class="card card-ifood h-100">
+      <div class="card-body text-center p-4">
+        <div class="mb-3">
+          <span class="display-4">🏪</span>
+        </div>
+        <h3 class="card-title text-ifood fw-bold">Gestão de Restaurantes</h3>
+        <p class="card-text text-muted">Cadastre restaurantes e expanda sua rede delivery</p>
+        <div class="mt-3 d-grid gap-2">
+          <a href="{{ url_for('cadastro_restaurante') }}" class="btn btn-ifood btn-lg">Cadastrar Restaurante</a>
+          <a href="{{ url_for('lista_restaurantes') }}" class="btn btn-outline-ifood btn-lg">Ver Restaurantes</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Estatísticas -->
+<div class="row mt-5">
+  <div class="col-12">
+    <div class="card card-ifood">
+      <div class="card-body">
+        <h3 class="text-center text-ifood fw-bold mb-4">📊 Resumo do Sistema</h3>
+        <div class="row text-center">
+          <div class="col-md-4">
+            <div class="p-3">
+              <h2 class="text-ifood fw-bold">10+</h2>
+              <p class="text-muted">Clientes Cadastrados</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3">
+              <h2 class="text-ifood fw-bold">5+</h2>
+              <p class="text-muted">Restaurantes Parceiros</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3">
+              <h2 class="text-ifood fw-bold">50+</h2>
+              <p class="text-muted">Pedidos Entregues</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

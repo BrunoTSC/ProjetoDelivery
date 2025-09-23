@@ -1,49 +1,57 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Restaurantes Cadastrados</h2>
-    <div>
-        <a href="{{ url_for('cadastro_restaurante') }}" class="btn btn-primary">Novo Restaurante</a>
-        <a href="{{ url_for('index') }}" class="btn btn-secondary">Página Principal</a>
-    </div>
+  <h2 class="text-Upper fw-bold">🏪 Restaurantes Cadastrados</h2>
+  <div>
+    <a href="{{ url_for('cadastro_restaurante') }}" class="btn btn-Upper btn-lg">➕ Novo Restaurante</a>
+    <a href="{{ url_for('index') }}" class="btn btn-outline-Upper btn-lg">🏠 Início</a>
+  </div>
 </div>
 
 {% if restaurantes %}
-<div class="table-responsive">
-    <table class="table table-striped table-hover">
-        <thead class="table-dark">
-            <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>CNPJ</th>
-                <th>Telefone</th>
-                <th>Categoria</th>
-                <th>Endereço</th>
-                <th>Data Cadastro</th>
-            </tr>
+<div class="card card-Upper">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-hover table-Upper">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>CNPJ</th>
+            <th>Telefone</th>
+            <th>Categoria</th>
+            <th>Endereço</th>
+            <th>Data Cadastro</th>
+          </tr>
         </thead>
         <tbody>
-            {% for restaurante in restaurantes %}
-            <tr>
-                <td>{{ restaurante.id }}</td>
-                <td><strong>{{ restaurante.nome }}</strong></td>
-                <td>{{ restaurante.cnpj }}</td>
-                <td>{{ restaurante.telefone }}</td>
-                <td>
-                    <span class="badge bg-primary">{{ restaurante.categoria }}</span>
-                </td>
-                <td>{{ restaurante.endereco }}</td>
-                <td>{{ restaurante.data_cadastro.strftime('%d/%m/%Y %H:%M') }}</td>
-            </tr>
-            {% endfor %}
+          {% for restaurante in restaurantes %}
+          <tr>
+            <td><strong>#{{ restaurante.id }}</strong></td>
+            <td>
+              <strong class="text-Upper">{{ restaurante.nome }}</strong>
+            </td>
+            <td>{{ restaurante.cnpj }}</td>
+            <td>{{ restaurante.telefone }}</td>
+            <td>
+              <span class="badge badge-Upper rounded-pill">{{ restaurante.categoria }}</span>
+            </td>
+            <td>{{ restaurante.endereco }}</td>
+            <td>{{ restaurante.data_cadastro.strftime('%d/%m/%Y %H:%M') }}</td>
+          </tr>
+          {% endfor %}
         </tbody>
-    </table>
+      </table>
+    </div>
+  </div>
 </div>
 {% else %}
-<div class="alert alert-info text-center">
-    <h4>Nenhum restaurante cadastrado ainda.</h4>
-    <p>Clique no botão "Novo Restaurante" para cadastrar o primeiro restaurante.</p>
-    <a href="{{ url_for('cadastro_restaurante') }}" class="btn btn-primary">Cadastrar Primeiro Restaurante</a>
+<div class="card card-Upper">
+  <div class="card-body text-center py-5">
+    <h3 class="text-Upper mb-3">🍽️ Nenhum restaurante cadastrado</h3>
+    <p class="text-muted mb-4">Comece cadastrando o primeiro restaurante da sua plataforma!</p>
+    <a href="{{ url_for('cadastro_restaurante') }}" class="btn btn-Upper btn-lg">Cadastrar Primeiro Restaurante</a>
+  </div>
 </div>
 {% endif %}
 {% endblock %}

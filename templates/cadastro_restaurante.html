@@ -1,60 +1,66 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-md-8">
-        <h2 class="text-center mb-4">Cadastro de Restaurante</h2>
-        <form method="POST" class="border p-4 rounded bg-white">
-            {{ form.hidden_tag() }}
+  <div class="col-lg-8">
+    <div class="card card-Upper">
+      <div class="card-header bg-Upper text-white">
+        <h3 class="mb-0">🏪 Cadastro de Restaurante</h3>
+      </div>
+      <div class="card-body p-4">
+        <form method="POST">
+          {{ form.hidden_tag() }}
+          
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-bold">Nome do Restaurante</label>
+              {{ form.nome(class="form-control form-control-lg", placeholder="Digite o nome do restaurante") }}
+              {% for error in form.nome.errors %}
+                <div class="text-danger small">{{ error }}</div>
+              {% endfor %}
+            </div>
             
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    {{ form.nome.label(class="form-label") }}
-                    {{ form.nome(class="form-control") }}
-                    {% for error in form.nome.errors %}
-                        <div class="text-danger small">{{ error }}</div>
-                    {% endfor %}
-                </div>
-                
-                <div class="col-md-6 mb-3">
-                    {{ form.cnpj.label(class="form-label") }}
-                    {{ form.cnpj(class="form-control", placeholder="00.000.000/0000-00") }}
-                    {% for error in form.cnpj.errors %}
-                        <div class="text-danger small">{{ error }}</div>
-                    {% endfor %}
-                </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-bold">CNPJ</label>
+              {{ form.cnpj(class="form-control form-control-lg", placeholder="00.000.000/0000-00") }}
+              {% for error in form.cnpj.errors %}
+                <div class="text-danger small">{{ error }}</div>
+              {% endfor %}
             </div>
+          </div>
 
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    {{ form.telefone.label(class="form-label") }}
-                    {{ form.telefone(class="form-control", placeholder="(11) 99999-9999") }}
-                    {% for error in form.telefone.errors %}
-                        <div class="text-danger small">{{ error }}</div>
-                    {% endfor %}
-                </div>
-                
-                <div class="col-md-6 mb-3">
-                    {{ form.categoria.label(class="form-label") }}
-                    {{ form.categoria(class="form-select") }}
-                    {% for error in form.categoria.errors %}
-                        <div class="text-danger small">{{ error }}</div>
-                    {% endfor %}
-                </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-bold">Telefone</label>
+              {{ form.telefone(class="form-control form-control-lg", placeholder="(11) 99999-9999") }}
+              {% for error in form.telefone.errors %}
+                <div class="text-danger small">{{ error }}</div>
+              {% endfor %}
             </div>
+            
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-bold">Categoria</label>
+              {{ form.categoria(class="form-select form-select-lg") }}
+              {% for error in form.categoria.errors %}
+                <div class="text-danger small">{{ error }}</div>
+              {% endfor %}
+            </div>
+          </div>
 
-            <div class="mb-3">
-                {{ form.endereco.label(class="form-label") }}
-                {{ form.endereco(class="form-control", placeholder="Rua, número, bairro, cidade") }}
-                {% for error in form.endereco.errors %}
-                    <div class="text-danger small">{{ error }}</div>
-                {% endfor %}
-            </div>
+          <div class="mb-4">
+            <label class="form-label fw-bold">Endereço Completo</label>
+            {{ form.endereco(class="form-control form-control-lg", placeholder="Rua, número, bairro, cidade - Estado") }}
+            {% for error in form.endereco.errors %}
+              <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+          </div>
 
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <a href="{{ url_for('index') }}" class="btn btn-secondary me-md-2">Voltar</a>
-                {{ form.submit(class="btn btn-success") }}
-            </div>
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a href="{{ url_for('lista_restaurantes') }}" class="btn btn-secondary btn-lg me-md-2">📋 Ver Restaurantes</a>
+            {{ form.submit(class="btn btn-Upper btn-lg") }}
+          </div>
         </form>
+      </div>
     </div>
+  </div>
 </div>
 {% endblock %}

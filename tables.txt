@@ -1,3 +1,10 @@
+CREATE TABLE clientes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(50) NOT NULL,
+    telefone VARCHAR(10) NOT NULL,
+    email VARCHAR(20) NOT NULL UNIQUE
+);
+
 CREATE TABLE IF NOT EXISTS restaurantes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
@@ -7,4 +14,36 @@ CREATE TABLE IF NOT EXISTS restaurantes (
     categoria VARCHAR(50) NOT NULL,
     data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS categorias_pratos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(50) NOT NULL,
+    descricao TEXT
+);
+
+-- Tabela para pratos
+CREATE TABLE IF NOT EXISTS pratos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    descricao TEXT,
+    preco DECIMAL(10,2) NOT NULL,
+    categoria_id INT,
+    restaurante_id INT NOT NULL,
+    disponivel BOOLEAN DEFAULT TRUE,
+    imagem VARCHAR(255),
+    tempo_preparo INT, -- em minutos
+    data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (restaurante_id) REFERENCES restaurantes(id),
+    FOREIGN KEY (categoria_id) REFERENCES categorias_pratos(id)
+);
+
+-- Inserir categorias padrão
+INSERT INTO categorias_pratos (nome, descricao) VALUES 
+('Entradas', 'Aperitivos e porções para começar'),
+('Pratos Principais', 'Refeições completas e principais'),
+('Sobremesas', 'Doces e sobremesas deliciosas'),
+('Bebidas', 'Refrigerantes, sucos e drinks'),
+('Lanches', 'Sanduíches e lanches rápidos'),
+('Pizzas', 'Pizzas de diversos sabores'),
+('Massas', 'Pratos de massa italianos');
 

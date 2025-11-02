@@ -81,3 +81,19 @@
   </div>
 </div>
 {% endblock %}
+
+<div class="col-md-4 mb-4">
+  <div class="card card-Upper h-100">
+    <div class="card-body text-center p-4">
+      <div class="mb-3">
+        <span class="display-4">🍽️</span>
+      </div>
+      <h3 class="card-title text-Upper fw-bold">Cardápio</h3>
+      <p class="card-text text-muted">Gerencie o cardápio dos restaurantes</p>
+      <div class="mt-3 d-grid gap-2">
+        <a href="{{ url_for('cadastro_prato') }}" class="btn btn-Upper btn-lg">Cadastrar Prato</a>
+        <a href="{{ url_for('lista_pratos') }}" class="btn btn-outline-Upper btn-lg">Ver Cardápio</a>
+      </div>
+    </div>
+  </div>
+</div>

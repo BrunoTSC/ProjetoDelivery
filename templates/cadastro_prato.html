@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-10">
+    <div class="card card-Upper">
+      <div class="card-header bg-Upper text-white">
+        <h3 class="mb-0">🍽️ Cadastro de Prato</h3>
+      </div>
+      <div class="card-body p-4">
+        <form method="POST">
+          {{ form.hidden_tag() }}
+          
+          <div class="row">
+            <div class="col-md-8 mb-3">
+              <label class="form-label fw-bold">Nome do Prato</label>
+              {{ form.nome(class="form-control form-control-lg", placeholder="Ex: Pizza Calabresa") }}
+              {% for error in form.nome.errors %}
+                <div class="text-danger small">{{ error }}</div>
+              {% endfor %}
+            </div>
+            
+            <div class="col-md-4 mb-3">
+              <label class="form-label fw-bold">Preço (R$)</label>
+              {{ form.preco(class="form-control form-control-lg", placeholder="0.00", step="0.01") }}
+              {% for error in form.preco.errors %}
+                <div class="text-danger small">{{ error }}</div>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-bold">Descrição</label>
+            {{ form.descricao(class="form-control", rows="3", placeholder="Descreva o prato, ingredientes, etc.") }}
+            {% for error in form.descricao.errors %}
+              <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-bold">Restaurante</label>
+              {{ form.restaurante_id(class="form-select form-select-lg") }}
+              {% for error in form.restaurante_id.errors %}
+                <div class="text-danger small">{{ error }}</div>
+              {% endfor %}
+            </div>
+            
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-bold">Categoria</label>
+              {{ form.categoria_id(class="form-select form-select-lg") }}
+              {% for error in form.categoria_id.errors %}
+                <div class="text-danger small">{{ error }}</div>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-bold">Tempo de Preparo (minutos)</label>
+              {{ form.tempo_preparo(class="form-control form-control-lg", placeholder="Ex: 30") }}
+              {% for error in form.tempo_preparo.errors %}
+                <div class="text-danger small">{{ error }}</div>
+              {% endfor %}
+            </div>
+            
+            <div class="col-md-6 mb-3">
+              <div class="form-check form-switch mt-4">
+                {{ form.disponivel(class="form-check-input", style="transform: scale(1.5);") }}
+                <label class="form-check-label fw-bold ms-3">Disponível para venda</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+            <a href="{{ url_for('lista_pratos') }}" class="btn btn-secondary btn-lg me-md-2">📋 Ver Pratos</a>
+            {{ form.submit(class="btn btn-Upper btn-lg") }}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

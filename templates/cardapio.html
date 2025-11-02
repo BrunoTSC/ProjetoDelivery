@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2 class="text-Upper fw-bold">📋 Cardápio - {{ restaurante.nome }}</h2>
+  <div>
+    <a href="{{ url_for('cadastro_prato') }}" class="btn btn-Upper btn-lg">➕ Novo Prato</a>
+    <a href="{{ url_for('lista_restaurantes') }}" class="btn btn-outline-Upper btn-lg">🏪 Restaurantes</a>
+  </div>
+</div>
+
+<div class="card card-Upper mb-4">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-8">
+        <h4 class="text-Upper">{{ restaurante.nome }}</h4>
+        <p class="text-muted mb-1">{{ restaurante.endereco }}</p>
+        <p class="text-muted mb-0">📞 {{ restaurante.telefone }}</p>
+      </div>
+      <div class="col-md-4 text-end">
+        <span class="badge bg-Upper fs-6">{{ restaurante.categoria }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if pratos %}
+  {% set categorias = {} %}
+  {% for prato in pratos %}
+    {% set categoria = prato.categoria_nome %}
+    {% if categoria not in categorias %}
+      {% set _ = categorias.update({categoria: []}) %}
+    {% endif %}
+    {% set _ = categorias[categoria].append(prato) %}
+  {% endfor %}
+
+  {% for categoria, pratos_categoria in categorias.items() %}
+  <div class="card card-Upper mb-4">
+    <div class="card-header bg-Upper text-white">
+      <h5 class="mb-0">{{ categoria }}</h5>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        {% for prato in pratos_categoria %}
+        <div class="col-md-6 mb-3">
+          <div class="d-flex justify-content-between align-items-start">
+            <div class="flex-grow-1">
+              <h6 class="fw-bold mb-1">{{ prato.nome }}</h6>
+              <p class="text-muted small mb-1">{{ prato.descricao or 'Sem descrição' }}</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="text-Upper fw-bold">R$ {{ "%.2f"|format(prato.preco) }}</span>
+                <span class="badge {% if prato.disponivel %}bg-success{% else %}bg-danger{% endif %} small">
+                  {{ 'Disponível' if prato.disponivel else 'Indisponível' }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+{% else %}
+<div class="card card-Upper">
+  <div class="card-body text-center py-5">
+    <h3 class="text-Upper mb-3">🍽️ Nenhum prato no cardápio</h3>
+    <p class="text-muted mb-4">Este restaurante ainda não tem pratos cadastrados.</p>
+    <a href="{{ url_for('cadastro_prato') }}" class="btn btn-Upper btn-lg">Cadastrar Primeiro Prato</a>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

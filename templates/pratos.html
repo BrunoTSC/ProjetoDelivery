@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2 class="text-Upper fw-bold">🍽️ Cardápio - Todos os Pratos</h2>
+  <div>
+    <a href="{{ url_for('cadastro_prato') }}" class="btn btn-Upper btn-lg">➕ Novo Prato</a>
+    <a href="{{ url_for('index') }}" class="btn btn-outline-Upper btn-lg">🏠 Início</a>
+  </div>
+</div>
+
+{% if pratos %}
+<div class="row">
+  {% for prato in pratos %}
+  <div class="col-md-6 col-lg-4 mb-4">
+    <div class="card card-Upper h-100">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <h5 class="card-title text-Upper fw-bold">{{ prato.nome }}</h5>
+          <span class="badge {% if prato.disponivel %}bg-success{% else %}bg-danger{% endif %}">
+            {{ 'Disponível' if prato.disponivel else 'Indisponível' }}
+          </span>
+        </div>
+        
+        <p class="card-text text-muted small">{{ prato.descricao or 'Sem descrição' }}</p>
+        
+        <div class="mb-2">
+          <span class="badge bg-Upper">{{ prato.categoria_nome }}</span>
+          <span class="badge bg-secondary">{{ prato.tempo_preparo }} min</span>
+        </div>
+        
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="text-Upper fw-bold mb-0">R$ {{ "%.2f"|format(prato.preco) }}</h4>
+          <small class="text-muted">{{ prato.restaurante_nome }}</small>
+        </div>
+      </div>
+      <div class="card-footer bg-transparent">
+        <small class="text-muted">Cadastrado em: {{ prato.data_cadastro.strftime('%d/%m/%Y') }}</small>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="card card-Upper">
+  <div class="card-body text-center py-5">
+    <h3 class="text-Upper mb-3">🍽️ Nenhum prato cadastrado</h3>
+    <p class="text-muted mb-4">Comece cadastrando o primeiro prato do seu cardápio!</p>
+    <a href="{{ url_for('cadastro_prato') }}" class="btn btn-Upper btn-lg">Cadastrar Primeiro Prato</a>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

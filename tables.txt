@@ -47,3 +47,44 @@ INSERT INTO categorias_pratos (nome, descricao) VALUES
 ('Pizzas', 'Pizzas de diversos sabores'),
 ('Massas', 'Pratos de massa italianos');
 
+select * from categorias_pratos;
+
+select * from pratos;
+
+-- Tabela para pedidos
+CREATE TABLE IF NOT EXISTS pedidos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    cliente_id INT NOT NULL,
+    restaurante_id INT NOT NULL,
+    endereco_entrega VARCHAR(300) NOT NULL,
+    status ENUM('pendente', 'confirmado', 'preparando', 'saiu_entrega', 'entregue', 'cancelado') DEFAULT 'pendente',
+    valor_total DECIMAL(10,2) NOT NULL,
+    forma_pagamento ENUM('cartao', 'dinheiro', 'pix') NOT NULL,
+    observacoes TEXT,
+    data_pedido TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    data_entrega TIMESTAMP NULL,
+    FOREIGN KEY (cliente_id) REFERENCES clientes(id),
+    FOREIGN KEY (restaurante_id) REFERENCES restaurantes(id)
+);
+
+-- Tabela para itens do pedido
+CREATE TABLE IF NOT EXISTS itens_pedido (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    pedido_id INT NOT NULL,
+    prato_id INT NOT NULL,
+    quantidade INT NOT NULL DEFAULT 1,
+    preco_unitario DECIMAL(10,2) NOT NULL,
+    subtotal DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (pedido_id) REFERENCES pedidos(id) ON DELETE CASCADE,
+    FOREIGN KEY (prato_id) REFERENCES pratos(id)
+);
+
+-- Tabela para status do pedido (histórico)
+CREATE TABLE IF NOT EXISTS historico_status (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    pedido_id INT NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    data_status TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    observacao TEXT,
+    FOREIGN KEY (pedido_id) REFERENCES pedidos(id) ON DELETE CASCADE
+);

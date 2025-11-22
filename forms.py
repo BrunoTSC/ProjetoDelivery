@@ -33,5 +33,22 @@ class PratoForm(FlaskForm):
     restaurante_id = SelectField("Restaurante", coerce=int, validators=[DataRequired()])
     tempo_preparo = IntegerField("Tempo de Preparo (minutos)", validators=[NumberRange(min=1, max=180)])
     disponivel = BooleanField("Disponível para venda", default=True)
-    # imagem = FileField("Imagem do Prato", validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'Apenas imagens!')])
     submit = SubmitField("Cadastrar Prato")
+
+class PedidoForm(FlaskForm):
+    cliente_id = SelectField("Cliente", coerce=int, validators=[DataRequired()])
+    restaurante_id = SelectField("Restaurante", coerce=int, validators=[DataRequired()])
+    endereco_entrega = TextAreaField("Endereço de Entrega", validators=[DataRequired(), Length(max=300)])
+    forma_pagamento = SelectField("Forma de Pagamento", choices=[
+        ('', 'Selecione a forma de pagamento'),
+        ('cartao', 'Cartão de Crédito/Débito'),
+        ('dinheiro', 'Dinheiro'),
+        ('pix', 'PIX')
+    ], validators=[DataRequired()])
+    observacoes = TextAreaField("Observações", validators=[Length(max=500)])
+    submit = SubmitField("Criar Pedido")
+
+class ItemPedidoForm(FlaskForm):
+    prato_id = SelectField("Prato", coerce=int, validators=[DataRequired()])
+    quantidade = IntegerField("Quantidade", validators=[DataRequired(), NumberRange(min=1)], default=1)
+    adicionar = SubmitField("Adicionar ao Pedido")

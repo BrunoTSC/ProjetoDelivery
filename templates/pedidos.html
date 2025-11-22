@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2 class="text-Upper fw-bold">🛒 Todos os Pedidos</h2>
+  <div>
+    <a href="{{ url_for('novo_pedido') }}" class="btn btn-Upper btn-lg">➕ Novo Pedido</a>
+    <a href="{{ url_for('index') }}" class="btn btn-outline-Upper btn-lg">🏠 Início</a>
+  </div>
+</div>
+
+{% if pedidos %}
+<div class="card card-Upper">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-hover table-Upper">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Restaurante</th>
+            <th>Itens</th>
+            <th>Valor Total</th>
+            <th>Status</th>
+            <th>Data</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for pedido in pedidos %}
+          <tr>
+            <td><strong>#{{ pedido.id }}</strong></td>
+            <td>{{ pedido.cliente_nome }}</td>
+            <td>{{ pedido.restaurante_nome }}</td>
+            <td>{{ pedido.total_itens }} itens</td>
+            <td>R$ {{ "%.2f"|format(pedido.valor_total) }}</td>
+            <td>
+              <span class="badge 
+                {% if pedido.status == 'pendente' %}bg-warning
+                {% elif pedido.status == 'confirmado' %}bg-info
+                {% elif pedido.status == 'preparando' %}bg-primary
+                {% elif pedido.status == 'saiu_entrega' %}bg-Upper
+                {% elif pedido.status == 'entregue' %}bg-success
+                {% else %}bg-danger{% endif %}">
+                {{ pedido.status|replace('_', ' ')|title }}
+              </span>
+            </td>
+            <td>{{ pedido.data_pedido.strftime('%d/%m/%Y %H:%M') }}</td>
+            <td>
+              <a href="{{ url_for('detalhes_pedido', pedido_id=pedido.id) }}" class="btn btn-sm btn-outline-Upper">👀 Detalhes</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% else %}
+<div class="card card-Upper">
+  <div class="card-body text-center py-5">
+    <h3 class="text-Upper mb-3">🛒 Nenhum pedido encontrado</h3>
+    <p class="text-muted mb-4">Comece criando o primeiro pedido do sistema!</p>
+    <a href="{{ url_for('novo_pedido') }}" class="btn btn-Upper btn-lg">Criar Primeiro Pedido</a>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

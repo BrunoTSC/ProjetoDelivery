@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card card-Upper mb-4">
+      <div class="card-header bg-Upper text-white">
+        <h3 class="mb-0">🍽️ Adicionar Itens ao Pedido</h3>
+      </div>
+      <div class="card-body p-4">
+        <form method="POST">
+          {{ form.hidden_tag() }}
+          
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-bold">Prato</label>
+              {{ form.prato_id(class="form-select form-select-lg") }}
+              {% for error in form.prato_id.errors %}
+                <div class="text-danger small">{{ error }}</div>
+              {% endfor %}
+            </div>
+            
+            <div class="col-md-4 mb-3">
+              <label class="form-label fw-bold">Quantidade</label>
+              {{ form.quantidade(class="form-control form-control-lg") }}
+              {% for error in form.quantidade.errors %}
+                <div class="text-danger small">{{ error }}</div>
+              {% endfor %}
+            </div>
+            
+            <div class="col-md-2 mb-3 d-flex align-items-end">
+              {{ form.adicionar(class="btn btn-Upper btn-lg w-100") }}
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    {% if session.pedido_temp.itens %}
+    <div class="card card-Upper">
+      <div class="card-header bg-success text-white">
+        <h4 class="mb-0">Itens do Pedido</h4>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Prato</th>
+                <th>Quantidade</th>
+                <th>Preço Unit.</th>
+                <th>Subtotal</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in session.pedido_temp.itens %}
+              <tr>
+                <td>{{ item.prato_nome }}</td>
+                <td>{{ item.quantidade }}</td>
+                <td>R$ {{ "%.2f"|format(item.preco_unitario) }}</td>
+                <td>R$ {{ "%.2f"|format(item.subtotal) }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            <tfoot>
+              <tr class="table-success">
+                <td colspan="3" class="text-end fw-bold">Total:</td>
+                <td class="fw-bold">R$ {{ "%.2f"|format(session.pedido_temp.itens|sum(attribute='subtotal')) }}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        
+        <form method="POST" action="{{ url_for('finalizar_pedido') }}">
+          <div class="d-grid">
+            <button type="submit" class="btn btn-Upper btn-lg">✅ Finalizar Pedido</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

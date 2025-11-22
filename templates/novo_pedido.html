@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card card-Upper">
+      <div class="card-header bg-Upper text-white">
+        <h3 class="mb-0">🛒 Novo Pedido</h3>
+      </div>
+      <div class="card-body p-4">
+        <form method="POST">
+          {{ form.hidden_tag() }}
+          
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-bold">Cliente</label>
+              {{ form.cliente_id(class="form-select form-select-lg") }}
+              {% for error in form.cliente_id.errors %}
+                <div class="text-danger small">{{ error }}</div>
+              {% endfor %}
+            </div>
+            
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-bold">Restaurante</label>
+              {{ form.restaurante_id(class="form-select form-select-lg") }}
+              {% for error in form.restaurante_id.errors %}
+                <div class="text-danger small">{{ error }}</div>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-bold">Endereço de Entrega</label>
+            {{ form.endereco_entrega(class="form-control", rows="3", placeholder="Digite o endereço completo para entrega") }}
+            {% for error in form.endereco_entrega.errors %}
+              <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-bold">Forma de Pagamento</label>
+              {{ form.forma_pagamento(class="form-select form-select-lg") }}
+              {% for error in form.forma_pagamento.errors %}
+                <div class="text-danger small">{{ error }}</div>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-bold">Observações</label>
+            {{ form.observacoes(class="form-control", rows="2", placeholder="Observações especiais, instruções de entrega, etc.") }}
+            {% for error in form.observacoes.errors %}
+              <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+          </div>
+
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a href="{{ url_for('lista_pedidos') }}" class="btn btn-secondary btn-lg me-md-2">📋 Ver Pedidos</a>
+            {{ form.submit(class="btn btn-Upper btn-lg") }}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

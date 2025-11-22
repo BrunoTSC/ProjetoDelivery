@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card card-Upper mb-4">
+      <div class="card-header bg-Upper text-white d-flex justify-content-between align-items-center">
+        <h3 class="mb-0">📋 Pedido #{{ pedido.id }}</h3>
+        <span class="badge fs-6 
+          {% if pedido.status == 'pendente' %}bg-warning
+          {% elif pedido.status == 'confirmado' %}bg-info
+          {% elif pedido.status == 'preparando' %}bg-primary
+          {% elif pedido.status == 'saiu_entrega' %}bg-Upper
+          {% elif pedido.status == 'entregue' %}bg-success
+          {% else %}bg-danger{% endif %}">
+          {{ pedido.status|replace('_', ' ')|title }}
+        </span>
+      </div>
+      <div class="card-body">
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <h5>👤 Cliente</h5>
+            <p class="mb-1"><strong>{{ pedido.cliente_nome }}</strong></p>
+            <p class="text-muted mb-0">📞 {{ pedido.cliente_telefone }}</p>
+          </div>
+          <div class="col-md-6">
+            <h5>🏪 Restaurante</h5>
+            <p class="mb-1"><strong>{{ pedido.restaurante_nome }}</strong></p>
+            <p class="text-muted mb-0">📞 {{ pedido.restaurante_telefone }}</p>
+          </div>
+        </div>
+
+        <h5>📍 Endereço de Entrega</h5>
+        <p class="text-muted mb-4">{{ pedido.endereco_entrega }}</p>
+
+        <h5>🍽️ Itens do Pedido</h5>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Prato</th>
+                <th>Quantidade</th>
+                <th>Preço Unit.</th>
+                <th>Subtotal</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in itens %}
+              <tr>
+                <td>{{ item.prato_nome }}</td>
+                <td>{{ item.quantidade }}</td>
+                <td>R$ {{ "%.2f"|format(item.preco_unitario) }}</td>
+                <td>R$ {{ "%.2f"|format(item.subtotal) }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            <tfoot>
+              <tr class="table-success">
+                <td colspan="3" class="text-end fw-bold">Total:</td>
+                <td class="fw-bold">R$ {{ "%.2f"|format(pedido.valor_total) }}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        {% if pedido.observacoes %}
+        <h5>📝 Observações</h5>
+        <p class="text-muted">{{ pedido.observacoes }}</p>
+        {% endif %}
+
+        <div class="row">
+          <div class="col-md-6">
+            <p class="mb-1"><strong>💳 Forma de Pagamento:</strong> {{ pedido.forma_pagamento|title }}</p>
+          </div>
+          <div class="col-md-6 text-end">
+            <p class="mb-1"><strong>📅 Data do Pedido:</strong> {{ pedido.data_pedido.strftime('%d/%m/%Y %H:%M') }}</p>
+            {% if pedido.data_entrega %}
+            <p class="mb-0"><strong>🚚 Entregue em:</strong> {{ pedido.data_entrega.strftime('%d/%m/%Y %H:%M') }}</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-Upper">
+      <div class="card-header bg-Upper text-white">
+        <h5 class="mb-0">🔄 Histórico de Status</h5>
+      </div>
+      <div class="card-body">
+        <div class="timeline">
+          {% for status in historico %}
+          <div class="timeline-item mb-3">
+            <div class="d-flex">
+              <div class="timeline-badge bg-Upper me-3"></div>
+              <div>
+                <h6 class="mb-1">{{ status.status|replace('_', ' ')|title }}</h6>
+                <p class="text-muted mb-1">{{ status.data_status.strftime('%d/%m/%Y %H:%M') }}</p>
+                {% if status.observacao %}
+                <p class="text-muted small mb-0">{{ status.observacao }}</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card card-Upper">
+      <div class="card-header bg-Upper text-white">
+        <h5 class="mb-0">⚡ Atualizar Status</h5>
+      </div>
+      <div class="card-body">
+        <form method="POST" action="{{ url_for('atualizar_status_pedido', pedido_id=pedido.id) }}">
+          <div class="mb-3">
+            <label class="form-label fw-bold">Novo Status</label>
+            <select name="status" class="form-select" required>
+              <option value="">Selecione...</option>
+              <option value="pendente" {% if pedido.status == 'pendente' %}selected{% endif %}>Pendente</option>
+              <option value="confirmado" {% if pedido.status == 'confirmado' %}selected{% endif %}>Confirmado</option>
+              <option value="preparando" {% if pedido.status == 'preparando' %}selected{% endif %}>Preparando</option>
+              <option value="saiu_entrega" {% if pedido.status == 'saiu_entrega' %}selected{% endif %}>Saiu para Entrega</option>
+              <option value="entregue" {% if pedido.status == 'entregue' %}selected{% endif %}>Entregue</option>
+              <option value="cancelado" {% if pedido.status == 'cancelado' %}selected{% endif %}>Cancelado</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-bold">Observação</label>
+            <textarea name="observacao" class="form-control" rows="3" placeholder="Observação opcional..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-Upper w-100">Atualizar Status</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="card card-Upper mt-4">
+      <div class="card-body text-center">
+        <a href="{{ url_for('lista_pedidos') }}" class="btn btn-outline-Upper w-100 mb-2">📋 Todos os Pedidos</a>
+        <a href="{{ url_for('novo_pedido') }}" class="btn btn-Upper w-100">➕ Novo Pedido</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.timeline-badge {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+</style>
+{% endblock %}
